@@ -1,6 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject, Scope } from '@nestjs/common';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
+import { CrudfactoryService } from 'src/crudfactory/crudfactory.service';
+import { EmployeeEntity } from './entities/employee.entity';
+import { OperationsEnum } from 'src/crudfactory/enums/operations.enum';
 
 /**
  * Service class for CRUD operations of employee module
@@ -8,13 +11,17 @@ import { UpdateEmployeeDto } from './dto/update-employee.dto';
 @Injectable()
 export class EmployeesService {
 
+  @Inject(CrudfactoryService)
+  private crudfactoryService: CrudfactoryService<EmployeeEntity>;
+
   /**
    * creates a new employee
    * @throws conflict exception
    * @param createEmployeeDto
    */
   create(createEmployeeDto: CreateEmployeeDto) {
-    return 'This action adds a new employee';
+    const createOperation = this.crudfactoryService.getOperation(OperationsEnum.Create);
+    return createOperation.process();
   }
 
    /**
@@ -22,7 +29,8 @@ export class EmployeesService {
    * @returns - all the employees
    */
   findAll() {
-    return `This action returns all employees`;
+    const findAllOperaion = this.crudfactoryService.getOperation(OperationsEnum.Get);
+    return findAllOperaion.process();
   }
 
   /**
@@ -31,7 +39,8 @@ export class EmployeesService {
    * @returns - employee by id
    */
   findOne(id: number) {
-    return `This action returns a #${id} employee`;
+    const findOneOperation = this.crudfactoryService.getOperation(OperationsEnum.GetOne);
+    return findOneOperation.process();
   }
 
   /**
@@ -41,7 +50,8 @@ export class EmployeesService {
    * @returns - updated employee by id
    */
   update(id: number, updateEmployeeDto: UpdateEmployeeDto) {
-    return `This action updates a #${id} employee`;
+    const updateOperation = this.crudfactoryService.getOperation(OperationsEnum.Update);
+    return updateOperation.process();
   }
 
   /**
@@ -51,6 +61,7 @@ export class EmployeesService {
    * @throws Inrernal server exception
    */
   remove(id: number) {
-    return `This action removes a #${id} employee`;
+    const removeOperation = this.crudfactoryService.getOperation(OperationsEnum.Delete);
+    return removeOperation.process();
   }
 }
