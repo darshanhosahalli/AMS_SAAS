@@ -15,5 +15,5 @@ export interface Operation<T extends BaseEntity> {
      * @param queryObj
      * @param id
      */
-    process(queryObj?, id?)
+    process(queryObj?, id?, columnName?)
 }

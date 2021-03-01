@@ -1,5 +1,5 @@
-import { Injectable, Scope } from "@nestjs/common";
-import { BaseEntity, Repository } from "typeorm";
+import { Injectable, Scope, ConflictException, InternalServerErrorException } from "@nestjs/common";
+import { BaseEntity, Repository, DeepPartial, InsertQueryBuilder } from "typeorm";
 import { Operation } from "./interface/operations.interface";
 
 /**
@@ -24,9 +24,21 @@ export class CreateRecord<T extends BaseEntity> implements Operation<T> {
     /**
      * create a new query object and return
      * @param queryObj
+     * @throws conflict exception, internal server exception
+     * @returns the newly created object
      */
-    process(queryObj: any) {
-        return "created a new employee"
+    async process(queryObj: DeepPartial<T>): Promise<T> {
+        try {
+            const query: InsertQueryBuilder<T> = this.repository.createQueryBuilder()
+                                             .insert()
+                                             .values(Object.assign({},queryObj));
+            const result = await query.execute();
+            return await this.repository.findOne(result.identifiers[0]);
+        } catch(error) {
+            if(error.code == '23505') {
+                throw new ConflictException()
+            }
+            throw new InternalServerErrorException();
+        }
     }
-    
 }

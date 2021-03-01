@@ -5,7 +5,7 @@ import { CreateRecord } from './create.service';
 import { Operation } from './interface/operations.interface';
 import { UpdateRecord } from './update.service';
 import { DeleteRecord } from './delete.service';
-import { GetRecords } from './get.service';
+import { GetRecords, GetOneRecords } from './get.service';
 
 /** uses Factory Pattern
  * factory class to get respective operation class
@@ -40,8 +40,8 @@ export class CrudfactoryService<T extends BaseEntity> {
     /**
      * getOne stargetgy
      */
-    @Inject(GetRecords)
-    private getOneOperation: GetRecords<T>;
+    @Inject(GetOneRecords)
+    private getOneOperation: GetOneRecords<T>;
     
     /**
      * Method to get the respective operation

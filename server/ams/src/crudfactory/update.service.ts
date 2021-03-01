@@ -1,4 +1,4 @@
-import { Injectable, Scope } from "@nestjs/common";
+import { Injectable, Scope, NotFoundException } from "@nestjs/common";
 import { BaseEntity, Repository } from "typeorm";
 import { Operation } from "./interface/operations.interface";
 
@@ -24,10 +24,18 @@ export class UpdateRecord<T extends BaseEntity> implements Operation<T> {
     /**
      * update the record of id and return
      * @param queryObj
+     * @throws not found exception
      * @param id 
      */
-    process(queryObj: any, id: any) {
-        return "updated an employee"
+    async process(queryObj: any, id: any, columnName: string): Promise<T> {
+        const update = this.repository.createQueryBuilder()
+            .update()
+            .set(queryObj)
+            .where(`${columnName} = :columnId`, { columnId: id });     
+        const result = await update.execute();
+        if(result.affected == 0) {
+            throw new NotFoundException();
+        }
+        return await this.repository.findOne(id);
     }
-    
 }

@@ -1,5 +1,5 @@
-import { Injectable, Scope } from "@nestjs/common";
-import { BaseEntity, Repository } from "typeorm";
+import { Injectable, Scope, NotFoundException, InternalServerErrorException } from "@nestjs/common";
+import { BaseEntity, Repository, DeleteQueryBuilder } from "typeorm";
 import { Operation } from "./interface/operations.interface";
 
 /**
@@ -23,10 +23,14 @@ export class DeleteRecord<T extends BaseEntity> implements Operation<T> {
 
     /**
      * delete the record of id
+     * @throws - Not found exceptino
      * @param id 
      */
-    process(id: any) {
-        return "deleted an employee"
+    async process(id: any, columnName: string): Promise<void> {
+        const query: DeleteQueryBuilder<T> = await this.repository.createQueryBuilder().delete().where(`${columnName} = :columnId`, { columnId: id});
+        const result = await query.execute();
+        if(result.affected == 0) {
+            throw new NotFoundException();
+        }
     }
-    
 }

@@ -1,4 +1,4 @@
-import { Injectable, Scope } from "@nestjs/common";
+import { Injectable, Scope, InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { BaseEntity, Repository } from "typeorm";
 import { Operation } from "./interface/operations.interface";
 
@@ -23,10 +23,11 @@ export class GetRecords<T extends BaseEntity> implements Operation<T> {
 
     /**
      * get all the records satisfied by query
-     * @param queryObj 
+     * @param queryObj
+     * @returns - list of all the records
      */
-    process(queryObj: any) {
-        return "get all the an employee"
+    async process(queryObj: any): Promise<T[]> {
+        return await this.repository.find();
     }
     
 }
@@ -52,10 +53,16 @@ export class GetOneRecords<T extends BaseEntity> implements Operation<T> {
 
     /**
      * get the reqcords satisfied by id
-     * @param id 
+     * @param id
+     * @throws not found exception
+     * @returns - the record specified by id
      */
-    process(id: any) {
-        return "get one employee"
+    async process(id: any): Promise<T> {
+        const result = await this.repository.findOne(id);
+        if(!result) {
+            throw new NotFoundException();
+        }
+        return result;       
     }
     
 }
