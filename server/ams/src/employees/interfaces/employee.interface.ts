@@ -4,7 +4,7 @@ import { Designations } from "../dto/create-employee.dto";
  * Interface for employee CRUD operations
  */
 export interface IEmployee {
-    readonly empId: string
+    readonly empid: string
     readonly name: string
     readonly age: number
     readonly phone: string

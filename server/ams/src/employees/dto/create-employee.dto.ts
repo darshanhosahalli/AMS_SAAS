@@ -22,7 +22,7 @@ export class CreateEmployeeDto implements IEmployee{
      */
     @IsNotEmpty()
     @IsString()
-    readonly empId: string
+    readonly empid: string
 
     /**
      * employee name

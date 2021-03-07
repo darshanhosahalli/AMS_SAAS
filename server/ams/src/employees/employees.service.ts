@@ -30,8 +30,8 @@ export class EmployeesService {
       createOperation.accept(this.employeeRepository);
       return await createOperation.process(createEmployeeDto);
     } catch(error) {
-      if(error.statusCode == 409) {
-        throw new ConflictException(`employee of id ${createEmployeeDto.empId} already exists`)
+      if(error.status == 409) {
+        throw new ConflictException(`employee of id ${createEmployeeDto.empid} already exists`)
       }
       throw new InternalServerErrorException('something went wrong please try again');
     }
@@ -41,12 +41,14 @@ export class EmployeesService {
    * fetch all the employees
    * @returns - all the employees
    */
-  async findAll(): Promise<IEmployee[]> {
+  async findAll(queryObj: any): Promise<IEmployee[]> {
     try {
+      console.log(queryObj);
       const findAllOperation = this.crudfactoryService.getOperation(OperationsEnum.Get);
       findAllOperation.accept(this.employeeRepository);
-      return await findAllOperation.process();
+      return await findAllOperation.process(queryObj);
     } catch(error) {
+      console.log(error);
       throw new InternalServerErrorException('something went wrong please try again');
     }
   }
@@ -62,7 +64,7 @@ export class EmployeesService {
       findOneOperation.accept(this.employeeRepository);
       return await findOneOperation.process(id);
     } catch(error) {
-      if(error.statusCode = 404) {
+      if(error.status = 404) {
         throw new NotFoundException('employee resource not found');
       }
       throw new InternalServerErrorException('something went wrong please try again');
@@ -81,7 +83,7 @@ export class EmployeesService {
       updateOperation.accept(this.employeeRepository);
       return await updateOperation.process(updateEmployeeDto, id, 'empId');
     } catch(error) {
-      if(error.statusCode = 404) {
+      if(error.status = 404) {
         throw new NotFoundException('employee resource not found');
       }
       throw new InternalServerErrorException('something went wrong please try again');
@@ -100,7 +102,7 @@ export class EmployeesService {
       removeOperation.accept(this.employeeRepository);
       return await removeOperation.process(id, 'empId');
     } catch(error) {
-      if(error.statusCode = 404) {
+      if(error.status = 404) {
         throw new NotFoundException('employee resource not found');
       }
       throw new InternalServerErrorException('something went wrong please try again');

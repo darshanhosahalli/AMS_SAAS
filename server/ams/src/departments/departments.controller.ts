@@ -3,7 +3,10 @@ import { DepartmentsService } from './departments.service';
 import { CreateDepartmentDto } from './dto/create-department.dto';
 import { UpdateDepartmentDto } from './dto/update-department.dto';
 
-@Controller('departments')
+/**
+ * Api Endpoints for CRUD operations on department module
+ */
+@Controller('/v1/departments')
 export class DepartmentsController {
   constructor(private readonly departmentsService: DepartmentsService) {}
 

@@ -1,12 +1,16 @@
-import { Injectable, Scope, InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import { Injectable, Scope, InternalServerErrorException, NotFoundException, Inject } from "@nestjs/common";
 import { BaseEntity, Repository } from "typeorm";
 import { Operation } from "./interface/operations.interface";
+import { QueryprocessorService } from "src/queryprocessor/queryprocessor.service";
 
 /**
  * Concrete Element class for get strategy
  */
 @Injectable({ scope: Scope.REQUEST})
 export class GetRecords<T extends BaseEntity> implements Operation<T> {
+
+    @Inject(QueryprocessorService)
+    private queryFacade: QueryprocessorService<T>;
 
     /**
      * Visitor repository
@@ -26,8 +30,9 @@ export class GetRecords<T extends BaseEntity> implements Operation<T> {
      * @param queryObj
      * @returns - list of all the records
      */
-    async process(queryObj: any): Promise<T[]> {
-        return await this.repository.find();
+    async process(queryObj?: any): Promise<T[]> {
+        const results = await this.queryFacade.getResults(this.repository, queryObj);
+        return results;
     }
     
 }

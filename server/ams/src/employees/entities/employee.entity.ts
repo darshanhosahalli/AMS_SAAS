@@ -18,7 +18,7 @@ export class EmployeeEntity extends BaseEntity implements IEmployee{
         unique: true,
         update: false,
     })
-    empId: string;
+    empid: string;
 
     /**
      * @column
