@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, Patch, HttpStatus, HttpCode, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Patch, HttpStatus, HttpCode, Query, UsePipes, ValidationPipe } from '@nestjs/common';
 import { EmployeesService } from './employees.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
@@ -16,13 +16,15 @@ export class EmployeesController {
    * @returns - the newly created employee
    */
   @Post()
+  @UsePipes(ValidationPipe)
   create(@Body() createEmployeeDto: CreateEmployeeDto) {
     return this.employeesService.create(createEmployeeDto);
   }
 
   /**
    * Function to return all the employees
-   * @returns - all the employees 
+   * @param queryObj
+   * @returns - all the employees by query
    */
   @Get()
   findAll(@Query() queryObj) {
@@ -46,6 +48,7 @@ export class EmployeesController {
    * @returns - the updated employee
    */
   @Patch(':id')
+  @UsePipes(ValidationPipe)
   update(@Param('id') id: string, @Body() updateEmployeeDto: UpdateEmployeeDto) {
     return this.employeesService.update(id, updateEmployeeDto);
   }

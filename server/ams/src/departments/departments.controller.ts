@@ -1,7 +1,6 @@
-import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, Patch, UsePipes, ValidationPipe } from '@nestjs/common';
 import { DepartmentsService } from './departments.service';
-import { CreateDepartmentDto } from './dto/create-department.dto';
-import { UpdateDepartmentDto } from './dto/update-department.dto';
+import { DepartmentDto } from './dto/department.dto';
 
 /**
  * Api Endpoints for CRUD operations on department module
@@ -11,7 +10,8 @@ export class DepartmentsController {
   constructor(private readonly departmentsService: DepartmentsService) {}
 
   @Post()
-  create(@Body() createDepartmentDto: CreateDepartmentDto) {
+  @UsePipes(ValidationPipe)
+  create(@Body() createDepartmentDto: DepartmentDto) {
     return this.departmentsService.create(createDepartmentDto);
   }
 
@@ -25,8 +25,9 @@ export class DepartmentsController {
     return this.departmentsService.findOne(+id);
   }
 
-  @Put(':id')
-  update(@Param('id') id: string, @Body() updateDepartmentDto: UpdateDepartmentDto) {
+  @Patch(':id')
+  @UsePipes(ValidationPipe)
+  update(@Param('id') id: string, @Body() updateDepartmentDto: DepartmentDto) {
     return this.departmentsService.update(+id, updateDepartmentDto);
   }
 

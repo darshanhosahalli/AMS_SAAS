@@ -1,14 +1,14 @@
-import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, Patch, UsePipes, ValidationPipe } from '@nestjs/common';
 import { HolidaysService } from './holidays.service';
-import { CreateHolidayDto } from './dto/create-holiday.dto';
-import { UpdateHolidayDto } from './dto/update-holiday.dto';
+import { HolidayDto } from './dto/holiday.dto';
 
 @Controller('holidays')
 export class HolidaysController {
   constructor(private readonly holidaysService: HolidaysService) {}
 
   @Post()
-  create(@Body() createHolidayDto: CreateHolidayDto) {
+  @UsePipes(ValidationPipe)
+  create(@Body() createHolidayDto: HolidayDto) {
     return this.holidaysService.create(createHolidayDto);
   }
 
@@ -17,13 +17,17 @@ export class HolidaysController {
     return this.holidaysService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.holidaysService.findOne(+id);
+  @Get('/month/:month')
+  findHolidaysByMonth(@Param('month') month: number) {
+    var date = new Date();
+    var firstDay = new Date(date.getFullYear(), month - 1, 1);
+    var lastDay = new Date(date.getFullYear(), month, 0);
+    return this.holidaysService.findHolidaysByMonth(firstDay, lastDay);
   }
 
-  @Put(':id')
-  update(@Param('id') id: string, @Body() updateHolidayDto: UpdateHolidayDto) {
+  @Patch(':id')
+  @UsePipes(ValidationPipe)
+  update(@Param('id') id: string, @Body() updateHolidayDto: HolidayDto) {
     return this.holidaysService.update(+id, updateHolidayDto);
   }
 

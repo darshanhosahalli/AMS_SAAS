@@ -43,7 +43,6 @@ export class EmployeesService {
    */
   async findAll(queryObj: any): Promise<IEmployee[]> {
     try {
-      console.log(queryObj);
       const findAllOperation = this.crudfactoryService.getOperation(OperationsEnum.Get);
       findAllOperation.accept(this.employeeRepository);
       return await findAllOperation.process(queryObj);
@@ -65,7 +64,7 @@ export class EmployeesService {
       return await findOneOperation.process(id);
     } catch(error) {
       if(error.status = 404) {
-        throw new NotFoundException('employee resource not found');
+        throw new NotFoundException('employee not found');
       }
       throw new InternalServerErrorException('something went wrong please try again');
     }
@@ -81,7 +80,7 @@ export class EmployeesService {
     try {
       const updateOperation = this.crudfactoryService.getOperation(OperationsEnum.Update);
       updateOperation.accept(this.employeeRepository);
-      return await updateOperation.process(updateEmployeeDto, id, 'empId');
+      return await updateOperation.process(updateEmployeeDto, id, 'empid');
     } catch(error) {
       if(error.status = 404) {
         throw new NotFoundException('employee resource not found');
@@ -94,13 +93,13 @@ export class EmployeesService {
    * Deletes an employee specified by id
    * @param id
    * @throws Not found Exception
-   * @throws Inrernal server exception
+   * @throws Internal server exception
    */
   async remove(id: string): Promise<void> {
     try {
       const removeOperation = this.crudfactoryService.getOperation(OperationsEnum.Delete);
       removeOperation.accept(this.employeeRepository);
-      return await removeOperation.process(id, 'empId');
+      return await removeOperation.process(id, 'empid');
     } catch(error) {
       if(error.status = 404) {
         throw new NotFoundException('employee resource not found');
