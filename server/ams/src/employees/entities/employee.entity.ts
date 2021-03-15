@@ -1,4 +1,4 @@
-import { Entity, PrimaryColumn, Column, OneToMany, BaseEntity, Index } from "typeorm";
+import { Entity, PrimaryColumn, Column, BaseEntity, Index } from "typeorm";
 import { Designations } from "../dto/create-employee.dto";
 import { IEmployee } from "../interfaces/employee.interface";
 

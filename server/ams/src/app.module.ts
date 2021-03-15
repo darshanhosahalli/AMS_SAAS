@@ -12,9 +12,10 @@ import { ProjectsModule } from './projects/projects.module';
 import { ItemsModule } from './items/items.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfig } from './config/typeorm.config';
+import { VendorModule } from './vendor/vendor.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(typeOrmConfig), EmployeesModule, QueryprocessorModule, CrudfactoryModule, DepartmentsModule, HolidaysModule, LeavesModule, AttendancesModule, ProjectsModule, ItemsModule],
+  imports: [TypeOrmModule.forRoot(typeOrmConfig), EmployeesModule, QueryprocessorModule, CrudfactoryModule, DepartmentsModule, HolidaysModule, LeavesModule, AttendancesModule, ProjectsModule, ItemsModule, VendorModule],
   controllers: [AppController],
   providers: [AppService],
 })
