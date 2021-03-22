@@ -23,11 +23,21 @@
   "dependencies": {
     "@nestjs/common": "^7.5.1",
     "@nestjs/core": "^7.5.1",
+    "@nestjs/mapped-types": "^0.3.0",
+    "@nestjs/mongoose": "^7.2.4",
     "@nestjs/platform-express": "^7.5.1",
+<<<<<<< HEAD
     "@nestjs/swagger": "^4.7.13",
     "@nestjs/typeorm": "^7.1.5",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
+=======
+    "@nestjs/swagger": "^4.7.15",
+    "@nestjs/typeorm": "^7.1.5",
+    "class-transformer": "^0.4.0",
+    "class-validator": "^0.13.1",
+    "mongoose": "^5.11.19",
+>>>>>>> e72c5da7755e86d4a43bce85e84c138dc8df53d2
     "mysql": "^2.18.1",
     "pg": "^8.5.1",
     "reflect-metadata": "^0.1.13",
